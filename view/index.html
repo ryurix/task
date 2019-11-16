@@ -1,0 +1,93 @@
+<?
+
+function echo_sort($name, $col, $sort)
+{
+	global $page;
+
+	if ($col == $sort || $col == $sort - 10) {
+		if ($sort > 10) {
+			$sort = $sort - 10;
+			$name.= ' &darr;';
+		} else {
+			$sort = $sort + 10;
+			$name.= ' &uarr;';
+		}
+	} else {
+		$sort = $col;
+	}
+
+	$link = '?sort='.$sort.($page > 1 ? '&page='.$page : '');
+
+	echo '<a href="'.$link.'">'.$name.'</a>';
+}
+
+?>
+<table class="table table-bordered table-striped">
+<thead>
+	<tr>
+		<th><? echo_sort('Имя пользователя', 1, $sort) ?></th>
+		<th><? echo_sort('Электронная почта', 2, $sort) ?></th>
+		<th><? echo_sort('Задача', 3, $sort) ?></th>
+		<th><? echo_sort('Статус', 4, $sort) ?></th>
+</thead>
+<tbody>
+<?
+
+foreach ($rows as $i)
+{
+	$badges = '';
+	if ($i['done']) {
+		$badges.= ' <span class="badge badge-success">выполнено</span>';
+	}
+	if ($i['red']) {
+		$badges.= ' <span class="badge badge-info">отредактировано администратором</span>';
+	}
+
+	if ($_SESSION['admin'] ?? 0) {
+		$a1 = '<a href="/'.$i['i'].'">';
+		$a2 = '</a>';
+	} else {
+		$a1 = '';
+		$a2 = '';
+	}
+
+	echo '
+<tr>
+	<td>'.$a1.$i['name'].$a2.'</td>
+	<td>'.$a1.$i['email'].$a2.'</td>
+	<td>'.$a1.$i['body'].$a2.'</td>
+	<td>'.$badges.'</td>
+</tr>';
+}
+
+?>
+</tbody>
+</table>
+<nav><ul class="pagination justify-content-center">
+<?
+
+if ($pages > 1) {
+
+	if ($page > 1)
+	{
+		echo '<li class="page-item"><a class="page-link" href="'.$link.'page='.($page - 1).'">&laquo</a></li>';
+	}
+
+	for( $i=1 ; $i<=$pages ; $i++ )
+	{
+		if ($i == $page) {
+			echo '<li class="page-item active"><a class="page-link">'.$i.'</a></li>';
+		} else {
+			echo '<li class="page-item"><a class="page-link" href="'.$link.'page='.$i.'">'.$i.'</a></li>';
+		}
+	}
+
+	if ($page < $pages)
+	{
+		echo '<li class="page-item"><a class="page-link" href="'.$link.'page='.($page + 1).'">&raquo;</a></li>';
+	}
+}
+
+?>
+</ul></nav>
+

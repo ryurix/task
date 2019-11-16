@@ -1,0 +1,18 @@
+<div class="row justify-content-md-center">
+	<div class="col col-lg-4 col-md-6">
+<form class="form-task-new" method="POST">
+	<label for="inputName" class="sr-only">Имя пользователя</label>
+	<input type="text" name="name" id="inputName" class="form-control my-1" placeholder="Имя пользователя" required autofocus value="<?= $task->name ?>">
+	<label for="inputEmail" class="sr-only">Электронная почта</label>
+	<input type="email" name="email" id="inputEmail" class="form-control my-1" placeholder="Электронная почта" required value="<?= $task->email; ?>">
+	<label for="inputBody" class="sr-only">Задача</label>
+	<input type="text" name="body" id="inputBody" class="form-control my-1" placeholder="Задача" required value="<?= $task->body ?>">
+	<div class="form-group form-check">
+		<input type="checkbox" class="form-check-input" id="inputDone" name="done" <?= $task->done ? 'checked' : '' ?>>
+		<label class="form-check-label" for="inputDone">Выполнено</label>
+	</div>
+	<input type="hidden" name="send" value="1">
+	<button class="btn btn-lg btn-primary btn-block my-1" type="submit">Сохранить изменения</button>
+</form>
+	</div>
+</div>
